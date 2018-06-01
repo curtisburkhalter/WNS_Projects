@@ -54,4 +54,6 @@ num_vars <- colnames(wns_raw)[sapply(wns_raw, num_check)]
  
 wns_raw[,num_vars] <- lapply(wns_raw[,num_vars], as.numeric)
 
-str(wns_raw)
+wns_cleaned <- wns_raw
+
+write_csv(wns_cleaned,here("WNS_Projects","Susceptibility_Modeling","Data","Cleaned_WNS_file.csv"),col_names = TRUE)
