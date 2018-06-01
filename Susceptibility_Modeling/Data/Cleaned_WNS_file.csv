@@ -1,0 +1,49 @@
+species,migrate,hibernate,solitary_or_small_clusters,clusters,caves,mines,bridges,quarries,storm_sewer,leaf_litter,foliage,hollow_trees,buildings,cliff_rock_crevices,min_temp,max_temp,disease_present,change_lambda
+Antrozous pallidus,0,1,1,1,1,1,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Artibeus (Artibeus) jamaicensis,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Choeronycteris mexicana,1,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Corynorhinus rafinesquii,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0.6,8.9,0,NA
+Corynorhinus townsendii,0,1,1,0,1,1,0,0,0,0,0,0,0,0,-3,21,0,NA
+Eptesicus (Eptesicus) fuscus,0,1,1,1,1,1,0,0,1,0,0,0,1,0,-10,20,1,14.3
+Euderma maculatum,0,1,1,0,0,0,0,0,0,0,0,0,1,1,NA,NA,0,NA
+Eumops glaucinus floridanus,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Eumops perotis,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Eumops underwoodi,NA,NA,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Idionycteris phyllotis,NA,NA,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Lasionycteris noctivagans,1,1,1,0,0,0,0,0,0,0,1,0,1,1,-0.6,13.3,0,NA
+Lasiurus (Dasypterus) ega,1,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Lasiurus (Dasypterus) intermedius,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Lasiurus (Dasypterus) xanthinus,0,1,1,0,0,0,0,0,0,0,1,0,0,0,NA,NA,0,NA
+Lasiurus (Lasiurus) blossevillii,1,1,1,0,0,0,0,0,0,0,1,0,0,0,NA,NA,0,NA
+Lasiurus (Lasiurus) borealis,1,1,1,0,0,0,0,0,0,1,0,1,0,0,1,NA,0,NA
+Lasiurus (Lasiurus) cinereus,1,1,1,0,0,0,0,0,0,0,1,0,0,0,NA,NA,0,NA
+Lasiurus (Lasiurus) cinereus semotus,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Lasiurus (Lasiurus) seminolus,1,1,1,0,0,0,0,0,0,1,1,0,0,0,-6.8,NA,0,NA
+Leptonycteris curasoae,1,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Leptonycteris nivalis,1,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Leptonycteris yerbabuenae,1,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Macrotus californicus,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Mormoops megalophylla,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Myotis auriculus,1,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Myotis austroriparius,0,1,1,1,1,0,0,0,0,0,0,0,0,0,4.4,10,0,NA
+Myotis californicus,0,1,1,0,1,1,0,0,0,0,0,0,0,0,10.7,14.4,0,NA
+Myotis ciliolabrum,0,1,1,0,1,1,0,0,0,0,0,0,0,0,1,17,0,NA
+Myotis evotis,0,1,1,0,1,0,0,0,0,0,0,0,1,0,NA,NA,0,NA
+Myotis grisescens,1,1,0,1,1,1,0,0,0,0,0,0,0,0,0,25,1,NA
+Myotis keenii,0,1,1,0,1,0,0,0,1,0,0,0,0,0,-1.5,12.3,0,NA
+Myotis leibii,0,1,1,0,1,1,0,0,0,0,0,0,0,0,-9,13,1,10.9
+Myotis lucifugus,1,1,0,1,1,1,0,0,0,0,0,0,0,0,-4,13,1,9.52
+Myotis melanorhinus,0,1,1,0,1,1,0,0,0,0,0,0,0,0,1,17,0,NA
+Myotis occultus,0,1,1,0,1,1,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Myotis septentrionalis,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0.6,13.9,1,76.1
+Myotis sodalis,1,1,0,1,1,0,0,0,0,0,0,0,0,0,-3.9,13.9,1,6.78
+Myotis thysanodes,1,1,1,0,1,0,0,0,0,0,0,0,1,0,6.7,6.7,0,NA
+Myotis velifer,1,1,0,1,1,0,0,0,0,0,0,0,0,0,5,20,0,NA
+Myotis volans,0,1,0,1,1,1,0,0,0,0,0,0,0,0,-4,13,0,NA
+Myotis yumanensis,1,1,0,1,1,0,0,0,0,0,0,0,1,0,NA,NA,0,NA
+Nycticeius humeralis,0,1,0,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0,NA
+Nyctinomops femorosaccus,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Nyctinomops macrotis,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
+Pipistrellus (Perimyotis) subflavus,1,1,1,0,1,1,0,0,1,0,0,0,0,0,0,17.8,1,51.1
+Pipistrellus (Pipistrellus) hesperus,0,1,NA,NA,1,1,0,0,0,0,0,0,0,1,0,14,0,NA
+Tadarida brasiliensis,1,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,0,NA
