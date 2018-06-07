@@ -70,12 +70,15 @@ wns_ConTbl_df$Var2Name <- rep(as.character(unique_combs[,2]),each=4)
 head(wns_ConTbl_df)
 
 #create labels that will be used in the plotting
-labels = paste(wns_ConTbl_df$Var1Name,wns_ConTbl_df$Var2Name,sep = "/")
+labels = paste(abbreviate(gsub("_"," ",wns_ConTbl_df$Var1Name), min = 3),abbreviate(gsub("_"," ",wns_ConTbl_df$Var2Name), min = 3),sep = "/")
 panel_labels <- labels[!duplicated(labels)]
 
 #NEED TO FIX PLOT LABELS
 ggplot(wns_ConTbl_df, aes(x = ComboCode, y = Freq, fill = ComboCode)) +
   geom_bar(stat = "Identity") +
-  facet_wrap(~Index, labeller = labeller(Index = panel_labels)) +
-  guides(fill = FALSE)
+  facet_wrap(~factor(Index,labels = panel_labels),scales = "free_y") +
+  guides(fill = FALSE) +
+  xlab("Combination Code") +
+  ylab("Frequency")
+
 
