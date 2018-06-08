@@ -73,7 +73,8 @@ head(wns_ConTbl_df)
 labels = paste(abbreviate(gsub("_"," ",wns_ConTbl_df$Var1Name), min = 3),abbreviate(gsub("_"," ",wns_ConTbl_df$Var2Name), min = 3),sep = "/")
 panel_labels <- labels[!duplicated(labels)]
 
-#NEED TO FIX PLOT LABELS
+#create facetted plot showing frequency of binary variables
+#from 2x2 contingency tables
 ggplot(wns_ConTbl_df, aes(x = ComboCode, y = Freq, fill = ComboCode)) +
   geom_bar(stat = "Identity") +
   facet_wrap(~factor(Index,labels = panel_labels),scales = "free_y") +
@@ -81,4 +82,41 @@ ggplot(wns_ConTbl_df, aes(x = ComboCode, y = Freq, fill = ComboCode)) +
   xlab("Combination Code") +
   ylab("Frequency")
 
+ggsave("Contingency Table Plots for Binary Variables.png",device = "png", path = here("WNS_Projects","Susceptibility_Modeling","EDA_Figures"), dpi = 400)
 
+#create plots of the various continous variables to look
+#for associations
+ggplot(wns_clean,aes(x = min_temp, y = max_temp)) +
+  geom_point(color = "blue") +
+  geom_smooth(stat = "smooth",color = "red") +
+  xlab("Minimum Temperature (C)") +
+  ylab("Maximum Temperature (C)")
+
+ggsave("Relationship between min temp and max temp.png",device = "png", path = here("WNS_Projects","Susceptibility_Modeling","EDA_Figures"), dpi = 400)
+
+#ignore the warnings below, there are issues with estimating
+#the prediction intervals where there are so many NAs
+#but this intended only to give us a very rough idea of
+#association between these variables
+ggplot(wns_clean,aes(x = min_temp, y = change_lambda)) +
+  geom_point(color = "blue") +
+  geom_smooth(stat = "smooth",color = "red") +
+  xlab("Minimum Temperature (C)") +
+  ylab("Change in lambda")
+
+ggsave("Relationship between min temp and change in lambda.png",device = "png", path = here("WNS_Projects","Susceptibility_Modeling","EDA_Figures"), dpi = 400)
+
+ggplot(wns_clean,aes(x = max_temp, y = change_lambda)) +
+  geom_point(color = "blue") +
+  geom_smooth(stat = "smooth",color = "red") +
+  xlab("Maximum Temperature (C)") +
+  ylab("Change in lambda")
+
+ggsave("Relationship between max temp and change in lambda.png",device = "png", path = here("WNS_Projects","Susceptibility_Modeling","EDA_Figures"), dpi = 400)
+
+cor(wns_clean[,grep(".*temp|.*change",colnames(wns_clean))], use = "pairwise.complete.obs")
+
+
+con_tbl_plotdf <- data.frame(Variable = unique(wns_ConTbl_df$Var1Name), Abbrev = unique(abbreviate(gsub("_"," ",wns_ConTbl_df$Var1Name),min = 3)))
+
+write_csv(con_tbl_plotdf, path = here("WNS_Projects","Susceptibility_Modeling","Contingency_Table_Abbreviations.csv"), col_names = TRUE)
