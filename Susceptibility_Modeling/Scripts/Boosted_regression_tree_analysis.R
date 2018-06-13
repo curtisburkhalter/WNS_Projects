@@ -5,6 +5,7 @@ suppressMessages(library(here))
 suppressMessages(library(arm))
 suppressMessages(library(gbm))
 suppressMessages(library(caret))
+suppressMessages(library(e1071))
 
 #read in data file containing the White Nose Syndrome status of each North American species;
 #data file has been previously cleaned
@@ -44,3 +45,34 @@ TrainSplits <- unlist(createDataPartition(wns_clean$disease_present, p = 0.80))
 
 train_set <- wns_clean[TrainSplits,]
 test_set <- wns_clean[-TrainSplits,]
+
+#subset train_set to not include species identity as a covariate
+sub_train <- train_set[,-1]
+
+sub_train$disease_present <- as.factor(sub_train$disease_present)
+sub_train <-as.data.frame(sub_train)
+
+#build a parameter tuning grid; the 3 parameters that should be tuned for a 
+#boosted regression tree are number of trees (ntree), interaction depth,
+#and shrinkage(or learning rate)
+gbmGrid <- expand.grid(interaction.depth = c(1,2,3),
+                       n.trees = (seq(from = 1000, to =8000,100)),
+                       shrinkage = c(0.1,0.01,0.001,0.0001,0.00001),
+                       n.minobsinnode = c(2,3,5))
+                       
+
+#specify how the model training should take place when determining
+#the optimal parameters; in this case use 10-fold cross validation
+fitControl <- trainControl(
+  method = "cv",
+  number = 10)
+
+#specify the training settings for the parameter tuning
+set.seed(825)
+gbmFit3 <- train(disease_present ~ ., data = sub_train,  
+                 method = "gbm", 
+                 trControl = fitControl, 
+                 verbose = FALSE, 
+                 tuneGrid = gbmGrid,
+                 na.action = na.omit,
+                 metric = "kappa")
