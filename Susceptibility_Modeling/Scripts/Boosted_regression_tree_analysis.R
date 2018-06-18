@@ -67,12 +67,20 @@ fitControl <- trainControl(
   method = "cv",
   number = 10)
 
-#specify the training settings for the parameter tuning
+#specify the training settings for the parameter tuning; would be interesting to see 
+#how this changes with imputation of missing values
 set.seed(825)
-gbmFit3 <- train(disease_present ~ ., data = sub_train,  
+gbmTune <- train(disease_present ~ ., data = sub_train,  
                  method = "gbm", 
                  trControl = fitControl, 
                  verbose = FALSE, 
                  tuneGrid = gbmGrid,
                  na.action = na.omit,
                  metric = "kappa")
+
+#look at tuning results
+View(na.omit(gbmTune$results))
+
+#look at the best tuning parameter settings as chosen using
+#accuracy
+gbmTune$bestTune
