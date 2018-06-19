@@ -6,6 +6,7 @@ suppressMessages(library(arm))
 suppressMessages(library(gbm))
 suppressMessages(library(caret))
 suppressMessages(library(e1071))
+suppressMessages(library(RANN))
 
 #read in data file containing the White Nose Syndrome status of each North American species;
 #data file has been previously cleaned
@@ -67,15 +68,17 @@ fitControl <- trainControl(
   method = "cv",
   number = 10)
 
+
 #specify the training settings for the parameter tuning; would be interesting to see 
 #how this changes with imputation of missing values
 set.seed(825)
 gbmTune <- train(disease_present ~ ., data = sub_train,  
                  method = "gbm", 
                  trControl = fitControl, 
+                 preProcess = c("bagImpute"),
                  verbose = FALSE, 
                  tuneGrid = gbmGrid,
-                 na.action = na.omit,
+                 na.action = na.pass,
                  metric = "kappa")
 
 #look at tuning results
