@@ -7,6 +7,7 @@ suppressMessages(library(gbm))
 suppressMessages(library(caret))
 suppressMessages(library(e1071))
 suppressMessages(library(RANN))
+suppressMessages(library(caTools))
 
 #read in data file containing the White Nose Syndrome status of each North American species;
 #data file has been previously cleaned
@@ -82,8 +83,28 @@ gbmTune <- train(disease_present ~ ., data = sub_train,
                  metric = "kappa")
 
 #look at tuning results
-View(na.omit(gbmTune$results))
+tune_results <- (na.omit(gbmTune$results))
+View(tune_results)
 
 #look at the best tuning parameter settings as chosen using
 #accuracy
 gbmTune$bestTune
+
+#the parameters chosen as the best parameters include:
+#n.trees = 1100; interaction.depth = 2, learning rate = 0.001 and n.minobsinnode = 2
+
+#look at the model summary for 'gbmTune'
+summary(gbmTune)
+
+ #write the model summary to dataframe
+gbmSummary <- as.data.frame(summary(gbmTune))
+
+#obtain predictions for the test data and then calculate AUC
+gbmPredictions.test <- predict(gbmTune, newdata = test_set, type = "prob")
+gbmPredictions.train <- predict(gbmTune, newdata = train_set, type = "prob")
+
+full_train <- na.omit(train_set)
+full_test <- na.omit(test_set)
+
+#need to calculate AUC still, was getting auc of 1 which can't be right
+colAUC(gbmPredictions.test,full_test$disease_present, plotROC = TRUE)
