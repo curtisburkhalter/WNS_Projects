@@ -57,3 +57,83 @@ wns_raw[,num_vars] <- lapply(wns_raw[,num_vars], as.numeric)
 wns_cleaned <- wns_raw
 
 write_csv(wns_cleaned,here("WNS_Projects","Susceptibility_Modeling","Data","Cleaned_WNS_file.csv"),col_names = TRUE)
+
+
+################################################################
+################################################################
+#READ IN UPDATED WORLDWIDE DATA SHEET
+################################################################
+################################################################
+
+#read in the worldwide species list with their corresponding
+#WNS status
+wns_ww <- read_csv(here("WNS_Projects","Susceptibility_Modeling","Data","worldwide_WNS_status.csv")) %>%
+  clean_names()
+
+#remove last column; contains no information
+wns_ww <- wns_ww[,1:3]
+
+#provide some column names
+colnames(wns_ww) <- c("index", "spp", "wns_status")
+
+#set 'wns_status' as factor
+wns_ww$wns_status <- factor(wns_ww$wns_status)
+
+#read in updated covariate data and join to wns_ww
+wns_all <- read_csv(here("WNS_Projects","Susceptibility_Modeling","Data","worldwide_WNS_covariates.csv")) %>%
+  clean_names() %>%
+  arrange(pan) %>%
+  select(-label) %>%
+  left_join(., wns_ww[,2:3], by = c("pan" = "spp"))
+
+#obtain a quick summary of wns_status column
+#mostly unknowns (~97%)
+summary(wns_all$wns_status)
+
+ggplot(wns_all, aes(x=wns_status, fill = wns_status)) +
+  geom_bar() +
+  xlab("White nose syndrome status") +
+  ylab("Count") +
+  labs(fill = "WNS Status") +
+  scale_fill_manual(values = hue_pal()(2), breaks = c(0,1,NA),labels = c("Uninfected", "Infected", "Unknown"),na.value = "black") +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+
+#subset worldwide data where WNS status is not an NA
+sub_ww <- wns_all[!is.na(wns_all$wns_status),]
+
+#count NAs by column for the data where status is not an NA
+NAs_bycol <- as.data.frame(t(sub_ww %>%
+            summarise_all(funs(sum(is.na(.))))))
+
+#attach a new column name 'count' which is the count of NAs for the 
+#variable across all 34 records of sub_ww
+colnames(NAs_bycol)[1] <- "count"
+
+#attach a new column name 'covariate' which is the name of the
+#covariates using the row names already attached
+NAs_bycol$covariate <- row.names(NAs_bycol)
+
+#delete the row names of 'NAs_bycol'
+row.names(NAs_bycol) <- NULL
+
+#determine the percentage of covariate data that is an NA for
+#each covariate
+NAs_bycol$pctNA <- round((NAs_bycol$count/nrow(sub_ww))*100,digits = 1)
+
+#determine how many rows of NAs_bycol have 0% covariate data missing
+nrow(NAs_bycol[NAs_bycol$pctNA < 0.0001,])
+summary(NAs_bycol)
+
+#begin the process of cleaning up the covariate data
+
+#after looking the diet and activity variables, all of the species
+#are 100% nectar feeding and 100%nocturnal so we can't use any of the
+#diet or activity variables
+sub_ww <- sub_ww[,-grep(".*diet_i|.*diet_n|.*diet_v|.*diet_s|.*diet_f|.*diet_p|.*activity_crep|.*activity_noc|.*activity_diur",colnames(sub_ww))]
+
+#all of the species that we have records for in terms of their WNS status
+#are in the family Vespertilionidae so we can remove all of the family
+#names because those are useless now due to lack of variation
+sub_ww <- sub_ww[,-grep(".*idae",colnames(sub_ww))]
+
+nrow(NAs_bycol[NAs_bycol$pctNA >= 50,])
