@@ -197,3 +197,6 @@ remove_no_var <- remove_no_var[,-1]
 
 #rearrange the column order
 remove_no_var <- remove_no_var[,c(1,19,2:18)]
+
+#write the cleaned up data file to disk 
+write_csv(remove_no_var,here("WNS_Projects","Susceptibility_Modeling","Data","updated_cleaned_WNS_file09042018.csv"),col_names = TRUE)
