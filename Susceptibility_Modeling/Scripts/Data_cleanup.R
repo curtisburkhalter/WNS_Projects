@@ -185,6 +185,8 @@ corr <- round(cor(num_ww[,-1], use = "pairwise.complete.obs"), 1)
 #plot correlations using ggcorrplot
 ggcorrplot(corr, type = "lower", outline.color = "white", lab = TRUE, lab_size = 3)
 
+ggsave("Correlation plot of continuous variables.png", path = here("WNS_Projects","Susceptibility_Modeling","EDA_Figures"), device = "png", dpi = 400)
+
 #There are a number of variables that show a correlation of exactly 1;
 #removed any variables with a correlation coefficient above 0.9/-0.9
 removed_correlated <- removed_ww[,-grep(".*mass_value|.*forearm_len|.*4_gr_mid_range_lat|.*7_gr_mid_range_long|.*6_gr_min_long|.*aet_mean|.*pet_mean|.*per_km",colnames(removed_ww))]
