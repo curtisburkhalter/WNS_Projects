@@ -100,6 +100,8 @@ ggplot(., aes(fill=wns_status, y=count, x=msw05_genus)) +
   theme(axis.text.x = element_text(angle = 90)) +
   scale_fill_discrete(name = "WNS Status", breaks = c("0","1"), labels = c("WN Negative", "WN Positive"))
 
+ggsave("Count of WNS status for each genus.png",device = "png", path = here("WNS_Projects","Susceptibility_Modeling","EDA_Figures"), dpi = 400)
+
 #count the number of 0's and 1's indicating WNS status for each foraging strategy type and plot
 wns_clean %>%
   group_by(for_strat_value, wns_status) %>%
@@ -110,67 +112,38 @@ wns_clean %>%
   ylab("Count") +
   scale_fill_discrete(name = "WNS Status", breaks = c("0","1"), labels = c("WN Negative", "WN Positive"))
 
+ggsave("Count of WNS status for each foraging strategy type.png",device = "png", path = here("WNS_Projects","Susceptibility_Modeling","EDA_Figures"), dpi = 400)
+
 #get logical vector indicating which columns are numeric in type
 nums <- unlist(lapply(wns_clean, is.numeric))  
 
 #subset column names to only include the numerics
 num_cols <- colnames(wns_clean[nums])
 
-#trying to create either a for loop or function to create a list of plots for each of the numeric variables
-#fix this tomorrow
-# fig_list = list()
+#write function that creates a boxplot for each continuous variable against the response variable 'wns_status'
+#and writes it to disk
+plot_data_column = function (data, column) {
+  ggplot(data = wns_clean, aes_string(x = "wns_status", y = column, fill = "wns_status")) +
+  geom_boxplot(color = "black") +
+  xlab("wns_status")
+  
+  ggsave(paste("Relationship between ", column, " and WNS status.png", sep = ""),device = "png", path = here("WNS_Projects","Susceptibility_Modeling","EDA_Figures"), dpi = 400)
+  
+}
+#apply the boxplot function to only the numeric columns
+fig_list <- lapply(num_cols, plot_data_column, data = wns_clean)
+fig_list
 
-# for (names in num_cols) {
-#   for (i in 1:length(num_cols)) {
-# fig_list[names] <-   ggplot(wns_clean, x = wns_status, y = num_cols[i]) +
-#   geom_boxplot()
-#   }
-# }
-
-# plot_data_column = function (data, column)
-#   ggplot(data = wns_clean, aes_string(x = column)) +
-#   geom_histogram(fill = "lightgreen") +
-#   xlab(column)
-# 
-# myplots <- lapply(colnames(data2), plot_data_column, data = data2)
-# fig_list
-
-
-ggplot(wns_clean, x = wns_status, y = num_cols[names]) +
-  geom_boxplot()
-#create plots of the various continous variables to look
-#for associations
-ggplot(wns_clean,aes(x = min_temp, y = max_temp)) +
-  geom_point(color = "blue") +
-  geom_smooth(stat = "smooth",color = "red") +
-  xlab("Minimum Temperature (C)") +
-  ylab("Maximum Temperature (C)")
-
-ggsave("Relationship between min temp and max temp.png",device = "png", path = here("WNS_Projects","Susceptibility_Modeling","EDA_Figures"), dpi = 400)
-
-#ignore the warnings below, there are issues with estimating
-#the prediction intervals where there are so many NAs
-#but this intended only to give us a very rough idea of
-#association between these variables
-ggplot(wns_clean,aes(x = min_temp, y = change_lambda)) +
-  geom_point(color = "blue") +
-  geom_smooth(stat = "smooth",color = "red") +
-  xlab("Minimum Temperature (C)") +
-  ylab("Change in lambda")
-
-ggsave("Relationship between min temp and change in lambda.png",device = "png", path = here("WNS_Projects","Susceptibility_Modeling","EDA_Figures"), dpi = 400)
-
-ggplot(wns_clean,aes(x = max_temp, y = change_lambda)) +
-  geom_point(color = "blue") +
-  geom_smooth(stat = "smooth",color = "red") +
-  xlab("Maximum Temperature (C)") +
-  ylab("Change in lambda")
-
-ggsave("Relationship between max temp and change in lambda.png",device = "png", path = here("WNS_Projects","Susceptibility_Modeling","EDA_Figures"), dpi = 400)
-
-cor(wns_clean[,grep(".*temp|.*change",colnames(wns_clean))], use = "pairwise.complete.obs")
+#rewrite the 'plot_data_column' function but remove the 'ggsave' portion so that it prints the plots
+#to the plot viewer window
+plot_data_column_show = function (data, column) {
+  ggplot(data = wns_clean, aes_string(x = "wns_status", y = column, fill = "wns_status")) +
+    geom_boxplot(color = "black") +
+    xlab("wns_status")
+  
+}
+#apply the boxplot function to only the numeric columns
+fig_show <- lapply(num_cols, plot_data_column_show, data = wns_clean)
+fig_show
 
 
-con_tbl_plotdf <- data.frame(Variable = unique(wns_ConTbl_df$Var1Name), Abbrev = unique(abbreviate(gsub("_"," ",wns_ConTbl_df$Var1Name),min = 3)))
-
-write_csv(con_tbl_plotdf, path = here("WNS_Projects","Susceptibility_Modeling","Contingency_Table_Abbreviations.csv"), col_names = TRUE)
