@@ -171,6 +171,11 @@ removed_ww <- ww_cov25_removed[,-grep(".*diet_i|.*diet_n|.*diet_v|.*diet_s|.*die
 #provide any information
 removed_ww <- removed_ww[,-grep(".*idae|order|species",colnames(removed_ww))]
 
+#need to clean up the column names a bit more
+colnames(removed_ww)[6:22] <- substr(colnames(removed_ww)[6:22], start = 7, stop = 30)
+colnames(removed_ww)[3] <- substr(colnames(removed_ww)[3], start = 7, stop = 30)
+colnames(removed_ww)[4:5] <- substr(colnames(removed_ww)[4:5], start = 6, stop = 30)
+
 #need to estimate correlation between numeric variables
 
 #first get just the numeric variables
