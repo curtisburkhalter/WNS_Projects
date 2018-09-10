@@ -87,7 +87,7 @@ View(tune_results)
 gbmTune$bestTune
 
 #the parameters chosen as the best parameters include:
-#n.trees = 1100; interaction.depth = 2, learning rate = 0.001 and n.minobsinnode = 2
+#n.trees = 5100; interaction.depth = 2, learning rate = 0.1 and n.minobsinnode = 2
 
 #look at the model summary for 'gbmTune'
 summary(gbmTune)
@@ -103,4 +103,4 @@ full_train <- na.omit(train_set)
 full_test <- na.omit(test_set)
 
 #need to calculate AUC still, was getting auc of 1 which can't be right
-colAUC(gbmPredictions.test,full_test$disease_present, plotROC = TRUE)
+colAUC(gbmPredictions.test,full_test$wns_status, plotROC = TRUE)
