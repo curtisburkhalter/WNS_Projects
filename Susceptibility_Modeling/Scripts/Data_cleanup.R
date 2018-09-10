@@ -196,7 +196,7 @@ ggsave("Correlation plot of continuous variables.png", path = here("WNS_Projects
 
 #There are a number of variables that show a correlation of exactly 1;
 #removed any variables with a correlation coefficient above 0.9/-0.9
-removed_correlated <- removed_ww[,-grep(".*mass_value|.*forearm_len|.*4_gr_mid_range_lat|.*7_gr_mid_range_long|.*6_gr_min_long|.*aet_mean|.*pet_mean|.*per_km",colnames(removed_ww))]
+removed_correlated <- removed_ww[,-grep(".*mass_value|.*forearm_len|.*gr_mid_range_lat|.*gr_mid_range_long|.*gr_min_long|.*aet_mean|.*pet_mean|.*per_km",colnames(removed_ww))]
 
 #there are two additional variables that show no variation so I'm going to remove those as well
 remove_no_var <- removed_correlated[,-grep(".*breadth|.*terrestriality", colnames(removed_correlated))]
@@ -205,7 +205,7 @@ remove_no_var <- removed_correlated[,-grep(".*breadth|.*terrestriality", colname
 remove_no_var <- remove_no_var[,-1]
 
 #rearrange the column order
-remove_no_var <- remove_no_var[,c(1,22,2:21)]
+remove_no_var <- remove_no_var[,c(1,19,2:18)]
 
 #write the cleaned up data file to disk 
 write_csv(remove_no_var,here("WNS_Projects","Susceptibility_Modeling","Data","updated_cleaned_WNS_file09042018.csv"),col_names = TRUE)
