@@ -84,9 +84,11 @@ wns_ww$wns_status <- factor(wns_ww$wns_status)
 #read in updated covariate data and join to wns_ww
 wns_all <- read_csv(here("WNS_Projects","Susceptibility_Modeling","Data","worldwide_WNS_covariates.csv")) %>%
   clean_names() %>%
-  arrange(pan) %>%
-  select(-label) %>%
-  left_join(., wns_ww[,2:3], by = c("pan" = "spp"))
+  arrange(., pan) %>%
+  left_join(., wns_ww[,2:3], by = c("pan" = "spp")) 
+
+#remove the 'label' column
+wns_all$label <- NULL
 
 #obtain a quick summary of wns_status column
 #mostly unknowns (~97%)
@@ -203,7 +205,7 @@ remove_no_var <- removed_correlated[,-grep(".*breadth|.*terrestriality", colname
 remove_no_var <- remove_no_var[,-1]
 
 #rearrange the column order
-remove_no_var <- remove_no_var[,c(1,19,2:18)]
+remove_no_var <- remove_no_var[,c(1,22,2:21)]
 
 #write the cleaned up data file to disk 
 write_csv(remove_no_var,here("WNS_Projects","Susceptibility_Modeling","Data","updated_cleaned_WNS_file09042018.csv"),col_names = TRUE)
