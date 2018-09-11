@@ -37,6 +37,13 @@ num_cols <- num_cols[-grep(".*wns_st",num_cols)]
 
 wns_clean[,num_cols] <- apply(wns_clean[,num_cols],2,rescale)
 
+#going to create 'one-hot' encoding for the factor varialbles
+GenusMM <- model.matrix(data = wns_clean, wns_status ~ genus - 1)
+ForStratMM <- model.matrix(data = wns_clean, wns_status ~ for_strat_value - 1)
+
+wns_clean <- cbind(wns_clean[, !names(wns_clean) %in% c("genus","for_strat_value")], GenusMM, ForStratMM)
+View(wns_clean)
+
 #need to create a stratified random sample for the k-fold cross validation
 set.seed(10)
 TrainSplits <- unlist(createDataPartition(wns_clean$wns_status, p = 0.80))
@@ -49,6 +56,7 @@ sub_train <- train_set[,-1]
 
 sub_train$wns_status <- as.factor(sub_train$wns_status)
 sub_train <-as.data.frame(sub_train)
+
 
 #build a parameter tuning grid; the 3 parameters that should be tuned for a 
 #boosted regression tree are number of trees (ntree), interaction depth,
@@ -87,7 +95,7 @@ View(tune_results)
 gbmTune$bestTune
 
 #the parameters chosen as the best parameters include:
-#n.trees = 5100; interaction.depth = 2, learning rate = 0.1 and n.minobsinnode = 2
+#n.trees = 1000; interaction.depth = 2, learning rate = 0.001 and n.minobsinnode = 2
 
 #look at the model summary for 'gbmTune'
 summary(gbmTune)
@@ -104,3 +112,4 @@ full_test <- na.omit(test_set)
 
 #need to calculate AUC still, was getting auc of 1 which can't be right
 colAUC(gbmPredictions.test,full_test$wns_status, plotROC = TRUE)
+View(gbmPredictions.test)
